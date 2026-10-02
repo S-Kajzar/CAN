@@ -40,6 +40,10 @@ node source/tests/e2e.js               # parcours navigateur (Playwright)
   - taille mémoire : bits, Mbit, « millions de bits », octets, ko, kio.
 - **Une valeur sans unité n'est acceptée que dans l'unité principale** : « 250 » sans unité ne vaut pas « 250 µs ».
 
+## Mise en page de l'accueil
+
+L'illustration est placée à côté du titre, avec une hauteur limitée, et l'accueil est resserré pour que les boutons de mode soient visibles sans défiler. Ces règles sont dans une feuille de style complémentaire (`HOME_FIT_CSS` dans `build.py`), ajoutée après le `<style>` du gabarit, qui reste inchangé. Sur les petits écrans, les listes des cartes de mode et le sous-titre peuvent être masqués.
+
 ## Questions reformulées, découpées ou fusionnées
 
 - **Renumérotation** : le source numérotait de nouveau à partir de Q1 dans chaque étape de la partie 2. Ses étapes deviennent les parties 2 et 3, numérotées Q2.x et Q3.x.
@@ -69,5 +73,6 @@ node source/tests/e2e.js               # parcours navigateur (Playwright)
   - confirmation en deux temps avant la remise, avec le nombre de réponses vides ;
   - arrêt du chronomètre à la remise ;
   - fenêtre « Imprimer les DR » avec 2 feuilles ;
-  - affichage mobile en 390 px sans défilement horizontal.
+  - affichage mobile en 390 px sans défilement horizontal ;
+  - accueil sans défilement : les deux boutons de mode sont visibles d'emblée, de 360×640 à 1920×950 (hauteurs utiles réelles de navigateur).
 - **Poids des images** : environ 0,45 Mo une fois intégrées, pour une limite de 1,5 Mo.

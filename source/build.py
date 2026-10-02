@@ -499,6 +499,67 @@ N_Q = len(Q)
 N_SK = len(SKETCHES)
 TOTAL_LABEL = "%d h %02d" % divmod(TOTAL_MIN, 60)
 
+# Accueil compact : illustration à côté du titre, boutons de mode visibles sans défiler.
+# Feuille complémentaire, placée après le <style> du gabarit qui reste inchangé.
+HOME_FIT_CSS = """<style>
+#home{min-height:0; padding:18px 20px 20px}
+.home-inner{max-width:1180px}
+.home-sub{font-size:.95rem; line-height:1.45}
+.home-facts span{display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.mc-lead{margin:0 0 4px}
+.mode-card li{font-size:.93rem; line-height:1.4}
+.home-top{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:14px; align-items:stretch}
+.home-top .home-head{display:flex; flex-direction:column; justify-content:center}
+.home-top .home-hero{margin:0; padding:6px; display:flex; align-items:center; justify-content:center}
+.home-top .home-hero img{width:auto; height:clamp(140px,26vh,240px); max-width:100%}
+.home-facts{margin:12px 0 14px}
+.home-facts div{padding:7px 12px}
+.home-choose{margin:0 0 8px; font-size:1.25rem}
+.mode-card{padding:12px 18px 14px}
+.mode-card ul{margin:0 0 10px}
+.mode-card li{margin:.12rem 0}
+.mode-card .btn{padding:9px 16px}
+.home-note{margin:10px 0 0}
+@media (min-width:601px) and (max-height:700px){
+  #home{padding-top:12px}
+  .home-head{padding:12px 18px}
+  #home h1{font-size:1.9rem}
+  .home-top .home-hero img{height:clamp(120px,24vh,170px)}
+  .home-facts{margin:8px 0 10px}
+  .home-facts div{padding:5px 12px}
+  .home-choose{display:none}
+}
+@media (max-width:820px){
+  .home-top{grid-template-columns:1fr}
+  .home-top .home-hero img{height:clamp(100px,18vh,170px)}
+  .modes{grid-template-columns:1fr 1fr; gap:10px}
+  .mode-card li{font-size:.92rem}
+}
+@media (max-width:600px){
+  #home{padding:12px 12px 14px}
+  #home h1{font-size:1.45rem}
+  .home-head{padding:12px 14px}
+  .home-sub{font-size:.88rem; line-height:1.4}
+  .home-facts{gap:6px; margin:10px 0}
+  .home-facts div{padding:5px 9px}
+  .home-facts b{font-size:1.05rem}
+  .home-facts span{display:none}
+  .modes{gap:10px}
+  .mode-card ul{display:none}
+  .mode-card{padding:10px 12px 12px}
+  .mode-card h3{font-size:1.1rem}
+  .mc-lead{font-size:.88rem}
+  .mode-card .btn{padding:8px 10px; font-size:.92rem; align-self:stretch}
+  .mc-lead{margin:2px 0 8px}
+  .home-note{display:none}
+  .home-top .home-hero img{height:clamp(80px,15vh,150px)}
+}
+@media (max-width:600px) and (max-height:720px){
+  .home-sub{display:none}
+  .home-top{gap:8px}
+}
+</style>"""
+
 HEAD_COMMENT = """<!-- Exercice généré par source/build.py à partir de source/gabarit-exercice-interactif.html.
      Ne pas modifier ce fichier à la main : modifier source/build.py puis relancer
      « python3 source/build.py ». -->"""
@@ -556,19 +617,20 @@ DOCS_HTML = f"""
 HOME_HTML = f"""
 <section id="home" aria-labelledby="home-title">
   <div class="home-inner">
+    <div class="home-top">
     <header class="home-head">
       <h1 id="home-title">{TITLE}</h1>
       <p class="home-sub">Un convertisseur analogique/numérique transforme une tension qui varie en continu en une suite de codes binaires. On analyse d'abord un convertisseur 4 bits, puis on l'améliore en augmentant sa résolution et sa fréquence d'échantillonnage, en mesurant à chaque fois le prix à payer en place mémoire.</p>
     </header>
     <figure class="home-hero">
       <img src="{IMG_DOC}" alt="Courbe analogique et sa numérisation en escalier sur 4 bits" width="1300" height="1300">
-      <figcaption class="small">Une tension analogique (en noir) et sa version numérisée sur 4 bits (en vert) : 16 niveaux, 16 échantillons en 4 ms.</figcaption>
     </figure>
+    </div>
     <div class="home-facts">
-      <div><b>{len(PARTS)} parties</b><span>du convertisseur 4 bits à sa version améliorée</span></div>
-      <div><b>{TOTAL_LABEL}</b><span>durée conseillée, qui fixe la pondération</span></div>
+      <div><b>{len(PARTS)} parties</b><span>du 4 bits à la version améliorée</span></div>
+      <div><b>{TOTAL_LABEL}</b><span>conseillée, fixe la pondération</span></div>
       <div><b>2 documents</b><span>DP1 et DT1 consultables</span></div>
-      <div><b>{N_SK} tracés</b><span>sur document réponse, auto-évalués</span></div>
+      <div><b>{N_SK} tracés</b><span>sur DR, auto-évalués</span></div>
     </div>
     <h2 class="home-choose">Choisis ton mode de travail</h2>
     <div class="modes">
@@ -762,6 +824,7 @@ def build():
         '<meta name="description" content="Échantillonnage, quantification, résolution d\'un convertisseur '
         'analogique/numérique et taille mémoire d\'un signal numérisé.">',
         style,
+        HOME_FIT_CSS,
         "</head>",
         '<body class="no-mode">',
         DOCS_HTML,

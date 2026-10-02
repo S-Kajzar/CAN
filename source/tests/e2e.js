@@ -188,6 +188,16 @@ async function drawOn(page, id) {
     await ctx.close();
   }
 
+  // ---------- Accueil sans défilement ----------
+  for (const [w, h] of [[1280, 600], [1366, 650], [1920, 950], [768, 950], [390, 660], [360, 640]]) {
+    const ctx = await browser.newContext({ viewport: { width: w, height: h } });
+    const page = await ctx.newPage();
+    await page.goto(URL);
+    const bottoms = await page.evaluate(() => [...document.querySelectorAll(".btn-mode")].map((e) => e.getBoundingClientRect().bottom));
+    check(bottoms.every((y) => y <= h), "accueil " + w + "×" + h + " : boutons de mode visibles sans défiler");
+    await ctx.close();
+  }
+
   // ---------- Mobile ----------
   {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
